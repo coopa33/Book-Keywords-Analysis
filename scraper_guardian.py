@@ -21,4 +21,9 @@ for i in range(len(all_p)):
         titles.append(match_title.group(1))
         authors.append(match_author[-1])
 
-print(authors)
+# Create relational databases
+open("books.db", "w").close()
+db = SQL("sqlite:///books.db")
+db.execute("CREATE TABLE authors (id INTEGER, name TEXT, gender smallint, PRIMARY KEY(id))")
+db.execute("CREATE TABLE books (book_id INTEGER, title TEXT, PRIMARY KEY(book_id))")
+
