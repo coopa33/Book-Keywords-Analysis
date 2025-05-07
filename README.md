@@ -9,3 +9,4 @@ In doing this, I am interested in the following questions:
 - Are summaries a good text base to obtain characteristic words that are informative?
 - How does the informativeness of characteristic words differ when using summaries compared to full texts?
 - Can the characteristic words of each novel be used as predictors of the gender of the author?
+- Can I use the TF-IDF scores of each novel to predict the genre of the novel?
