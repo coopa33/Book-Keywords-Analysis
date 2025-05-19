@@ -70,31 +70,28 @@ def get_title_and_author():
     return titles, authors
 
 
-def create_relational_databases(titles, authors):
+def create_relational_databases():
 
     # Create relational databases
     open("books.db", "w").close()
     db = SQL("sqlite:///books.db")
     db.execute("CREATE TABLE authors (id INTEGER, name TEXT, PRIMARY KEY(id));")
-    db.execute("CREATE TABLE books (book_id INTEGER, title TEXT, PRIMARY KEY(book_id));")
-    
+    db.execute("CREATE TABLE books (book_id INTEGER, title TEXT, description TEXT, PRIMARY KEY(book_id));")
+    titles, authors = get_title_and_author()
     for title in titles:
-        print(title)
         title = title.strip().upper()
         id  = db.execute("INSERT INTO books (title) VALUES(?);", title)
+        description = get_goodreads_description(title)
+        db.execute("UPDATE books SET description = ? WHERE title = ?;", description, title)
     for author in authors:
         author = author.strip().upper()
         id = db.execute("INSERT INTO authors (name) VALUES(?);", author)
 
-if __name__=="__main__":
 
-    # Call SQL module, add description column to books table, and add descriptions
-    db = SQL("sqlite:///books.db")
-    db.execute("ALTER TABLE books ADD COLUMN description TEXT;")
-    book_titles = db.execute("SELECT title FROM books;")
-    for dict in book_titles:
-        description = get_goodreads_description(dict['title'])
-        db.execute("UPDATE books SET description = ? WHERE title = ?;", description, dict['title'])
+
+if __name__=="__main__":
+    create_relational_databases()
+    
         
 
 
