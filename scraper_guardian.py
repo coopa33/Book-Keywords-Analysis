@@ -41,6 +41,23 @@ def get_goodreads_description(title):
 
     return text
 
+def get_full_text(ids):
+    """Get the full text of the book from Project Gutenberg"""
+
+    text_url = "https://www.gutenberg.org/cache/epub/"+ ids +"/pg"+ ids +".txt"
+    request = requests.get(text_url)
+    out = request.text
+    start = "START OF THE PROJECT GUTENBERG EBOOK"
+    end = "END OF THE PROJECT GUTENBERG EBOOK"
+    start_idx = out.find(start)
+    start_idx += len(start)
+    end_idx = out.find(end)
+    out = out[start_idx:end_idx].strip()
+
+    return out
+
+
+
 
 
 def get_title_and_author():

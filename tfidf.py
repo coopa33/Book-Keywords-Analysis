@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from nltk.corpus import words
 import nltk
 
+# Download nltk set of words, and set as global set
 nltk.download('words')
 ENG_WORDS = set(word.lower() for word in words.words())
 
@@ -18,6 +19,7 @@ def lemmatize(text):
 
     # Create pos tagging for lemmatization, lemmatize text, and remove stopwords, punctuation symbols, and numerics.
     nlp = spacy.load('en_core_web_sm')
+    nlp.max_length = 2_000_000  
     doc = nlp(text.lower().strip())
     lemmas = [token.lemma_.lower().strip() for token in doc if 
               token.lemma_ in ENG_WORDS and 
