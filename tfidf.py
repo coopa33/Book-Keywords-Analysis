@@ -1,32 +1,45 @@
-import pandas as pd
-import numpy as np
 import spacy
+
 import re
 from cs50 import SQL
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from scipy.sparse import csr_matrix
+from sklearn.feature_extraction.text import TfidfVectorizer
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from nltk.corpus import words
 import nltk
+import logging
 
 # Download nltk set of words, and set as global set
 nltk.download('words')
-ENG_WORDS = set(word.lower() for word in words.words())
 
 def lemmatize(text):
     """ Lemmatize a string text into list of lemmatized word tokens"""
 
+    custom_stopwords = {
+    "say", "tell", "shall", "mr", "mrs", "like", "know", "think", "see", "look",
+    "come", "go", "leave", "time", "day", "man", "thing", "good", "old", "little",
+    "great", "o", "eye", "hand"
+    }
+
+
     # Create pos tagging for lemmatization, lemmatize text, and remove stopwords, punctuation symbols, and numerics.
+    lemmas = []
     nlp = spacy.load('en_core_web_sm')
     nlp.max_length = 2_000_000  
     doc = nlp(text.lower().strip())
-    lemmas = [token.lemma_.lower().strip() for token in doc if 
-              token.lemma_ in ENG_WORDS and 
-              not token.is_stop and 
-              not token.is_punct and 
-              not token.like_num and 
-              re.match(r'^[a-zA-Z]+$', token.lemma_)]
+    for token in doc:
+        lemma = token.lemma_
+        if len(lemma) > 2 and not token.is_stop and not token.is_punct and not token.like_num and re.match(r'^[a-zA-Z]+$', lemma) and not lemma in custom_stopwords:
+            lemmas.append(lemma)
+
+
+    # lemmas = [token.lemma_.lower().strip() for token in doc if 
+    #           token.lemma_ in ENG_WORDS and 
+    #           not token.is_stop and 
+    #           not token.is_punct and 
+    #           not token.like_num and 
+    #           re.match(r'^[a-zA-Z]+$', token.lemma_) and
+    #           token.lemma_]
 
     return lemmas
 
@@ -61,9 +74,12 @@ def extract_column(sql_list, column_name):
     return column
 
 
-def tf_idf(corpus):
+def tf_idf(corpus, max_df):
     """ Creates a documents/token matrix with tf-idf, returns the matrix and a list of tokens"""
-    vectorizer = TfidfVectorizer(analyzer = lemmatize)
+
+    # Use GPU for spacy, comment out if no dedicated GPU is available.
+    spacy.prefer_gpu()
+    vectorizer = TfidfVectorizer(analyzer = lemmatize, max_df=max_df)
     X = vectorizer.fit_transform(corpus)
     feature_names = vectorizer.get_feature_names_out()
     
@@ -82,6 +98,7 @@ def max_row(df, n, index = False):
 
 
 def create_wordcloud(list_of_words, list_of_values, name):
+    logging.getLogger('matplotlib').setLevel(logging.WARNING)
     wordcloud = WordCloud(background_color="white", width=1000, height=500, random_state=42)
     wordcloud.generate_from_frequencies(dict(zip(list_of_words, list_of_values)))
     plt.axis("off")
@@ -89,6 +106,8 @@ def create_wordcloud(list_of_words, list_of_values, name):
     plt.imshow(wordcloud)
     plt.show()
 
+if __name__ == "__main__":
+    print("Heathcliff" in ENG_WORDS)
 
 
 

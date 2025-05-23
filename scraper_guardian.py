@@ -4,6 +4,7 @@ import requests
 import pandas as pd
 import re
 from cs50 import SQL
+from tqdm import tqdm
 
 
 def get_goodreads_description(title):
@@ -95,12 +96,12 @@ def create_relational_databases():
     db.execute("CREATE TABLE authors (id INTEGER, name TEXT, PRIMARY KEY(id));")
     db.execute("CREATE TABLE books (book_id INTEGER, title TEXT, description TEXT, PRIMARY KEY(book_id));")
     titles, authors = get_title_and_author()
-    for title in titles:
+    for title in tqdm(titles):
         title = title.strip().upper()
         id  = db.execute("INSERT INTO books (title) VALUES(?);", title)
         description = get_goodreads_description(title)
         db.execute("UPDATE books SET description = ? WHERE title = ?;", description, title)
-    for author in authors:
+    for author in tqdm(authors):
         author = author.strip().upper()
         id = db.execute("INSERT INTO authors (name) VALUES(?);", author)
 
