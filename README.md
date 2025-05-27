@@ -11,7 +11,7 @@ Structure:
 
 To read my project, please follow the subsequent steps:
 
-1) Make sure to download all of these, and do not change the locations of any of the scripts or datafiles. 
+1) Make sure to download all files and directories, and do not change the locations of any of the scripts or datafiles. 
 2) Before running the notebook, please install all required libraries in your virtual environment. To do so, run 'pip install -r requirements.txt' from your virtual environment.
 3) To view the project, run the jupyer notebook **results.ipynb**.
 4) ***WARNING*** Some of the operations in the notebook take a long time! Note that the complete database of all summaries and all full texts are already contained in the sql database **books.db**. So you do not need to run the scraping operations necessarily. However, if you want to run these, it shouldn't take too long. I would definitely **not recommend** running the tf-idf matrix calculations, as they can take **VERY LONG (around 100 minutes for full texts with name exclusion)**. To avoid that, please take note of comments below such operations, as they show you how you can load the same tf-idf matrices from local files that I've previously saved. 
