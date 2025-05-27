@@ -29,6 +29,7 @@ def simple_get(url, max_retries=3):
         print(f"The following error occurred during HTTP GET request to {url}: {str(e)}")
         return None
 
+
 def is_good_response(resp):
     """
     Returns true if the response seems to be HTML, false otherwise.

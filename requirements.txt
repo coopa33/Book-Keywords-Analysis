@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+requests
+beautifulsoup4
+tqdm
+cs50
+scikit-learn
+wordcloud
+spacy
