@@ -8,4 +8,4 @@ In doing this, I am interested in the following questions:
 - What are the most characteristic words for each of the top 100 novels?
 - Are summaries a good text base to obtain characteristic words that are informative?
 - How does the informativeness of characteristic words differ when using summaries compared to full texts?
-- Can I use the TF-IDF scores of each novel to predict the genre/date of release of the novel?
+- Can I use TF-IDF scores to make book recommendations from my database?
