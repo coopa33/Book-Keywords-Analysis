@@ -9,3 +9,5 @@ In doing this, I am interested in the following questions:
 - Are summaries a good text base to obtain characteristic words that are informative?
 - How does the informativeness of characteristic words differ when using summaries compared to full texts?
 - Can I use TF-IDF scores to make book recommendations from my database?
+
+The notebook **results.ipynb** contains all analyses and visualizations. The scripts **scraper_guardian.py** and **tfidf.py** contain function implementations that I use throughout the notebook. The "data/" directory contains all intermediate data from my analysis. The **process_book.ipynb** contains my project progress log. 
